@@ -1,4 +1,4 @@
-import discord, random, pygeoip, math, requests, time
+import discord, random, requests, time
 from discord.ext import commands
 
 client = commands.Bot(command_prefix = '.')
@@ -301,8 +301,8 @@ async def slots(ctx):
         await ctx.send("tf how'd u win ur hacking")
     else:
         await ctx.send("lmao rekt")
-	
 
+	
 client.run(TOKEN)
 
 
