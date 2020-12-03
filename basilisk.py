@@ -1,4 +1,4 @@
-import discord, random, pygeoip, math, requests
+import discord, random, pygeoip, math, requests, time
 from discord.ext import commands
 
 client = commands.Bot(command_prefix = '.')
@@ -15,13 +15,14 @@ async def on_command_error(ctx, error):
         await ctx.send("Please pass in all required arguments!")
 
 
+
 @client.command()
 async def ping(ctx):
     await ctx.send(f'Bot Latency: {round(client.latency * 1000)}ms')
 
 @client.command()
 async def patch(ctx):
-    patchNotes = discord.Embed(description=("Fixed .ip2\nAdded more quotes to .skid\nMade .help look a lot better\nAdded this command (.patch)\n"))
+    patchNotes = discord.Embed(description=("Fixed .ip2\nAdded more quotes to .skid\nMade .help look a lot better\nAdded .slots (See .help for more info)\nAdded this command (.patch)\n"))
     await ctx.send(embed=patchNotes)
 
 
@@ -106,7 +107,7 @@ async def bsaycli(ctx):
   
 @client.command()
 async def help(ctx):
-    helpMenu = discord.Embed(description=(".ping - Check Basilisks Latency.\n.patch - See Basilisk's new patch notes!\n.8Ball (question) - Will respond with an answer to your question. -- Aliases: .eightball, .Eightball, .EightBall\n.flip - Coin Flip (Heads/Tails).\n.plang - Random Programming Langauge.\n.ip2 (IP) - Performs IP Lookup. -- Aliases: .ipscan, .iplookup, .iplook\n.skid - Outputs random skiddie quote. -- Aliases: .skiddie, .scriptkiddie\n.test - Used to test if bot is online.\n.source - Link to this bots GitHub Page.\n.math - Example of Use: .math 5 + 10\nRock Paper Scissors: .rock/.paper/.scissors - Plays Rock Paper Scissors with you.\n.randnum - Random number between two numbers. Example - .randnum 1 20\n.help - This Menu."))
+    helpMenu = discord.Embed(description=(".ping - Check Basilisks Latency.\n.patch - See Basilisk's new patch notes!\n.8Ball (question) - Will respond with an answer to your question. -- Aliases: .eightball, .Eightball, .EightBall\n.slots - Emulates a slot machine\n.flip - Coin Flip (Heads/Tails).\n.plang - Random Programming Langauge.\n.ip2 (IP) - Performs IP Lookup. -- Aliases: .ipscan, .iplookup, .iplook\n.skid - Outputs random skiddie quote. -- Aliases: .skiddie, .scriptkiddie\n.test - Used to test if bot is online.\n.source - Link to this bots GitHub Page.\n.math - Example of Use: .math 5 + 10\nRock Paper Scissors: .rock/.paper/.scissors - Plays Rock Paper Scissors with you.\n.randnum - Random number between two numbers. Example - .randnum 1 20\n.help - This Menu."))
     await ctx.send(embed=helpMenu)
 
 @client.command()
@@ -225,8 +226,8 @@ async def basilisk(ctx):
 
 @client.command()
 async def math(ctx, x, s, y):
-    x = int(x)
-    y = int(y)
+    x = float(x)
+    y = float(y)
     if s == '+':
         mDone = x+y
     elif s == '-':
@@ -258,6 +259,48 @@ async def randnum(ctx, x, y):
         await ctx.send("You cannot generate a number longer than 100 characters!")
     else:
         await ctx.send(randInt)
+
+
+@client.command()
+async def slots(ctx):
+    slotOptions = [':tangerine:', ':tangerine:', ':tangerine:', ':tangerine:', ':tangerine:', ':strawberry:', ':strawberry:', ':lemon:']
+
+
+    sChances = discord.Embed(description=("Highest chance of winning: :tangerine:\nLowest Chance: :lemon:\nIn the middle: :strawberry:\n"))
+    await ctx.send(embed=sChances)
+    #Spin 1
+    spin1 = discord.Embed(description=("Spinning first Slot..."))
+    await ctx.send(embed=spin1)
+    time.sleep(1)
+    slotChoice1 = random.choice(slotOptions)
+    land1 = discord.Embed(description=(f"Landed on {slotChoice1}"))
+    await ctx.send(embed=land1)
+
+    #Spin 2
+    spin2 = discord.Embed(description=("Spinning second Slot..."))
+    await ctx.send(embed=spin2)
+    time.sleep(1)
+    slotChoice2 = random.choice(slotOptions)
+    land2 = discord.Embed(description=(f"Landed on {slotChoice2}"))
+    await ctx.send(embed=land2)
+
+    #Spin 3
+    spin3 = discord.Embed(description=("Spinning third Slot..."))
+    await ctx.send(embed=spin3)
+    time.sleep(1)
+    slotChoice3 = random.choice(slotOptions)
+    land3 = discord.Embed(description=(f"Landed on {slotChoice3}"))
+    await ctx.send(embed=land3)
+
+
+    if slotChoice1 == ':tangerine:' and slotChoice2 == ':tangerine:' and slotChoice3 == ':tangerine:':
+        await ctx.send("tf how'd u win ur hacking")
+    elif slotChoice1 == ':strawberry:' and slotChoice2 == ':strawberry:' and slotChoice3 == ':strawberry:':
+        await ctx.send("tf how'd u win ur hacking")
+    elif slotChoice1 == ':lemon:' and slotChoice2 == ':lemon:' and slotChoice3 == ':lemon:':
+        await ctx.send("tf how'd u win ur hacking")
+    else:
+        await ctx.send("lmao rekt")
 	
 
 client.run(TOKEN)
