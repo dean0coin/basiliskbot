@@ -1,4 +1,4 @@
-import discord, random, pygeoip
+import discord, random, pygeoip, math, requests
 from discord.ext import commands
 
 client = commands.Bot(command_prefix = '.')
@@ -18,6 +18,12 @@ async def on_command_error(ctx, error):
 @client.command()
 async def ping(ctx):
     await ctx.send(f'Bot Latency: {round(client.latency * 1000)}ms')
+
+@client.command()
+async def patch(ctx):
+    patchNotes = discord.Embed(description=("Fixed .ip2\nAdded more quotes to .skid\nMade .help look a lot better\nAdded this command (.patch)\n"))
+    await ctx.send(embed=patchNotes)
+
 
 @client.command(aliases=['8ball', 'eightball', 'Eightball', 'EightBall'])
 async def _8ball(ctx, *, question):
@@ -100,21 +106,8 @@ async def bsaycli(ctx):
   
 @client.command()
 async def help(ctx):
-    await ctx.send('''
-            **Help Menu**
-            ```Commands:
-            .ping - Check Basilisks Latency.
-            .8Ball (question) - Will respond with an answer to your question. -- Aliases: .eightball, .Eightball, .EightBall
-            .flip - Coin Flip (Heads/Tails).
-            .plang - Random Programming Langauge.
-            .ip2 (IP) - Performs IP Lookup. -- Aliases: .ipscan, .iplookup, .iplook
-            .skid - Outputs random skiddie quote. -- Aliases: .skiddie, .scriptkiddie
-            .test - Used to test if bot is online.
-            .source - Link to this bots GitHub Page.
-            Rock Paper Scissors: .rock/.paper/.scissors - Plays Rock Paper Scissors with you.
-            .help - This Menu.
-            ```
-    ''')
+    helpMenu = discord.Embed(description=(".ping - Check Basilisks Latency.\n.patch - See Basilisk's new patch notes!\n.8Ball (question) - Will respond with an answer to your question. -- Aliases: .eightball, .Eightball, .EightBall\n.flip - Coin Flip (Heads/Tails).\n.plang - Random Programming Langauge.\n.ip2 (IP) - Performs IP Lookup. -- Aliases: .ipscan, .iplookup, .iplook\n.skid - Outputs random skiddie quote. -- Aliases: .skiddie, .scriptkiddie\n.test - Used to test if bot is online.\n.source - Link to this bots GitHub Page.\n.math - Example of Use: .math 5 + 10\nRock Paper Scissors: .rock/.paper/.scissors - Plays Rock Paper Scissors with you.\n.randnum - Random number between two numbers. Example - .randnum 1 20\n.help - This Menu."))
+    await ctx.send(embed=helpMenu)
 
 @client.command()
 async def flip(ctx):
@@ -143,14 +136,25 @@ async def test(ctx):
     await ctx.send("Bot is Online!")
 
 @client.command(aliases=['ipscan', 'iplookup', 'iplook'])
-async def ip2(ctx, ip):
-    gip = pygeoip.GeoIP('GeoLiteCity.dat')
-    res = gip.record_by_addr(ip)
-    for key,val in res.items():
-	    await ctx.send('%s : %s' % (key,val))
-
+async def ip2(ctx, host):
+    try:
+        r = requests.get(f"http://ip-api.com/json/{host}?fields=country,regionName,city,isp,mobile,proxy,query")
+        geo = r.json()
+        query = geo["query"]
+        isp = geo["isp"]
+        city = geo["city"]
+        region = geo["regionName"]
+        country = geo["country"]
+        proxy = geo["proxy"]
+        mobile = geo["mobile"]
+        embed = discord.Embed(description=(f"Host: {query}\nISP: {isp}\nCity: {city}\nRegion: {region}\nCountry: {country}\VPN/Proxy: {proxy}\nMobile: {mobile}"))
+        embed.set_author(name=(query))
+        await ctx.send(embed=embed)
+    except:
+        ipNo = discord.Embed(description=("That is not a valid IP Address!"))
+        await ctx.send(embed=ipNo)
 @client.command()
-async def bsay(ctx, message=""):
+async def bsay(ctx, *, message):
     await ctx.channel.purge(limit=1)
     await ctx.send(message)
 
@@ -162,7 +166,9 @@ async def skid(ctx):
     'what botnet do I use? Stressthem ofc', 'stop laughing just tell me what a linux is', 
     'ofc i use windows what else is there? mac haha', 'how is an operating system california??', 'i use windows btw',
     'whats an arch and why do you keep telling us you use it?', 'ugh this script stopped working',
-    'whats a python?', 'whats a java? can you send me the script']
+    'whats a python?', 'whats a java? can you send me the script', 'who wants this new account checker??', 'yea i know what hacking is! i have the new fortnite crack tool',
+    'dont mess with me ill crack your fortnite account', 'i can legit dox u', 'bro ill get ur ip i have wireshark', 'wdym dos and ddos are different thing? no they arent',
+    'windows is the best operating system', 'of course i play fortnite']
     skidSays = random.choice(skidSaysLst)
     await ctx.send(skidSays)
 
@@ -212,6 +218,48 @@ async def scissors(ctx):
         await ctx.send(rpsS)
         await ctx.send("bro ur haxxing wtf")
 #---------------Rock Paper Scissors---------------#
+
+@client.command()
+async def basilisk(ctx):
+    await ctx.send("That's me!")
+
+@client.command()
+async def math(ctx, x, s, y):
+    x = int(x)
+    y = int(y)
+    if s == '+':
+        mDone = x+y
+    elif s == '-':
+        mDone = x-y
+    elif s == '*':
+        mDone = x*y
+    elif s == '/':
+        mDone = x/y
+    else:
+        await ctx.send("That isn't a valid operator")
+
+    mDone = str(mDone)
+    if len(mDone) > 99:
+        await ctx.send("You cannot pass in a math problem where the answer is longer than 100 characters!")
+    else:
+        await ctx.send(mDone)
+
+@client.command()
+async def joke(ctx):
+    await ctx.send("This command isn't ready yet!")
+
+@client.command()
+async def randnum(ctx, x, y):
+    x = int(x)
+    y = int(y)
+    randInt = random.randint(x, y)
+    randInt = str(randInt)
+    if len(randInt) > 99:
+        await ctx.send("You cannot generate a number longer than 100 characters!")
+    else:
+        await ctx.send(randInt)
+	
+
 client.run(TOKEN)
 
 
