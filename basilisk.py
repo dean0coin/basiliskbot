@@ -241,9 +241,11 @@ async def math(ctx, x, s, y):
 
     mDone = str(mDone)
     if len(mDone) > 99:
-        await ctx.send("You cannot pass in a math problem where the answer is longer than 100 characters!")
+        lError = discord.Embed(description=("You cannot pass in a math problem where the answer is longer than 100 characters!"))
+        await ctx.send(embed=lError)
     else:
-        await ctx.send(mDone)
+        eDone = discord.Embed(description=(f"Question: {x} {s} {y}\n\nAnswer: {mDone}"))
+        await ctx.send(embed=eDone)
 
 @client.command()
 async def joke(ctx):
@@ -302,7 +304,7 @@ async def slots(ctx):
     else:
         await ctx.send("lmao rekt")
 
-	
+
 client.run(TOKEN)
 
 
