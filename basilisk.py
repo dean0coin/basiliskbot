@@ -107,8 +107,9 @@ async def bsaycli(ctx):
   
 @client.command()
 async def help(ctx):
-    helpMenu = discord.Embed(description=(".ping - Check Basilisks Latency.\n.patch - See Basilisk's new patch notes!\n.8Ball (question) - Will respond with an answer to your question. -- Aliases: .eightball, .Eightball, .EightBall\n.slots - Emulates a slot machine\n.flip - Coin Flip (Heads/Tails).\n.plang - Random Programming Langauge.\n.ip2 (IP) - Performs IP Lookup. -- Aliases: .ipscan, .iplookup, .iplook\n.skid - Outputs random skiddie quote. -- Aliases: .skiddie, .scriptkiddie\n.test - Used to test if bot is online.\n.source - Link to this bots GitHub Page.\n.math - Example of Use: .math 5 + 10\nRock Paper Scissors: .rock/.paper/.scissors - Plays Rock Paper Scissors with you.\n.randnum - Random number between two numbers. Example - .randnum 1 20\n.help - This Menu."))
+    helpMenu = discord.Embed(description=(".ping - Check Basilisks Latency.\n.patch - See Basilisk's new patch notes!\n.8Ball (question) - Will respond with an answer to your question. -- Aliases: .eightball, .Eightball, .EightBall\n.slots - Emulates a slot machine\n.flip - Coin Flip (Heads/Tails).\n.plang - Random Programming Langauge.\n.ip2 (IP) - Performs IP Lookup. -- Aliases: .ipscan, .iplookup, .iplook\n.skid - Outputs random skiddie quote. -- Aliases: .skiddie, .scriptkiddie\n.test - Used to test if bot is online.\n.source - Link to this bots GitHub Page.\n.math - Example of Use: .math 5 + 10\nRock Paper Scissors: .rock/.paper/.scissors - Plays Rock Paper Scissors with you.\n.randnum - Random number between two numbers. Example - .randnum 1 20\n.help - This Menu.\n\nBot created by dean0coin#8999!"))
     await ctx.send(embed=helpMenu)
+    
 
 @client.command()
 async def flip(ctx):
